@@ -10,6 +10,44 @@ local function parseFilters(csvFilters)
   return filters
 end
 
+function M.os_capture(cmd)
+  local n = os.tmpname ()
+  local c = cmd .. ' > ' .. n 
+  local f = assert(io.popen(c, 'r'))
+  f:close()
+  local s = ''
+  for line in io.lines (n) do
+      s = s .. line
+  end
+  return s
+end
+
+
+function M.jwt_cache_set( key, value, exp)
+  local dict = ngx.shared["kong_jwt"]
+  if dict then
+    local success, err, forcible = dict:set(key, value, exp)
+    ngx.log(ngx.DEBUG, "cache set: success=", success, " err=", err, " forcible=", forcible)
+  else
+      ngx.log(ngx.ERR, "dictionary kong_jwt does not exists")
+  end
+end
+
+-- retrieve value from server-wide cache if available
+function M.jwt_cache_get( key )
+  local dict = ngx.shared["kong_jwt"]
+  local value
+  local flags
+  if dict then
+    value, flags = dict:get(key)
+    if value then ngx.log(ngx.DEBUG, "cache hit: type=", type, " key=", key) end
+  else
+    ngx.log(ngx.ERR, "dictionary kong_jwt does not exists")
+  end
+  return value
+end
+
+
 function M.get_redirect_uri_path(ngx)
   local function drop_query()
     local uri = ngx.var.request_uri

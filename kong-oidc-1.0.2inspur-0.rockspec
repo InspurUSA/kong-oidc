@@ -1,8 +1,8 @@
 package = "kong-oidc"
-version = "1.0.2-0"
+version = "1.0.2inspur-0"
 source = {
-    url = "git://github.com/nokia/kong-oidc",
-    tag = "v1.0.2",
+    url = "https://github.com/InspurUSA/kong-oidc",
+    tag = "jwks-without-x5c",
     dir = "kong-oidc"
 }
 description = {
