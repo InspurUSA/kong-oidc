@@ -58,7 +58,7 @@ function CustomHandler:access(config)
 
         ngx.log(ngx.DEBUG, "Found Access token, using it for authentication ")
 --        local jwks = "https://3lk.seattle.inspurusa.net/auth/realms/master/protocol/openid-connect/certs"
-        local cmd = "node /Users/kgignatyev/dev/inspur/inspur-kong/jwt-utils/jwt-verifier.js " .. accessToken .. " " .. oidcConfig.discovery
+        local cmd = "node /etc/inspur-kong/jwt-utils/jwt-verifier.js " .. accessToken .. " " .. oidcConfig.discovery
 --        ngx.log(ngx.NOTICE, cmd)
         local res = utils.os_capture(cmd)
         local resParsed = cjson.decode(res)
