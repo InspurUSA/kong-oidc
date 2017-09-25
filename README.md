@@ -29,3 +29,7 @@ the server itself.
 If you're using `luarocks` execute the following:
 
      luarocks install kong-oidc
+     
+## Install into locally running kong
+
+     luarocks make     

@@ -22,6 +22,37 @@ function M.os_capture(cmd)
   return s
 end
 
+-- get an OAuth 2.0 bearer access token from the HTTP request
+function M.get_bearer_access_token(opts)
+
+  local err
+
+  -- get the access token from the Authorization header
+  local headers = ngx.req.get_headers()
+  local header =  headers['Authorization']
+
+  if header == nil or header:find(" ") == nil then
+    err = "no Authorization header found"
+    ngx.log(ngx.ERR, err)
+    return nil, err
+  end
+
+  local divider = header:find(' ')
+  if string.lower(header:sub(0, divider-1)) ~= string.lower("Bearer") then
+    err = "no Bearer authorization header value found"
+    ngx.log(ngx.ERR, err)
+    return nil, err
+  end
+
+  local access_token = header:sub(divider+1)
+  if access_token == nil then
+    err = "no Bearer access token value found"
+    ngx.log(ngx.ERR, err)
+    return nil, err
+  end
+
+  return access_token, err
+end
 
 function M.jwt_cache_set( key, value, exp)
   local dict = ngx.shared["kong_jwt"]

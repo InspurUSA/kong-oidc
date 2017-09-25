@@ -12,6 +12,6 @@ return {
     session_secret = { type = "string", required = false },
     recovery_page_path = { type = "string" },
     filters = { type = "string" },
-    jwt_verifier = { type = "string", required = true, default = "/etc/inspur-kong/jwt-utils/jwt-verifier.js"}
+    jwt_verifier_url = { type = "string", required = true, default = "http://127.0.0.1:3000/jwt/verify"}
   }
 }
